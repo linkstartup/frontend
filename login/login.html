@@ -1,0 +1,139 @@
+<html>
+    <header>
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <link href="login.css" rel="stylesheet" type="text/css" media="all" />
+
+        </header>
+    <body>
+                <div id='clipLogin'>
+                    <input type="email" id="logemail" placeholder="E-mail" required="">
+                    <input type="password" id="logpassword" placeholder="Password" required="">
+                    <div class="tp">
+                        <div id="login">LOGIN NOW</div>
+                    </div>
+                </div>
+
+
+                <div id='logout'>
+                    LOGOUT
+                </div>                
+
+                
+
+                <div id='clipRegster'>
+                    <input type="email" id="email" placeholder="E-mail" required="">
+                    <input type="tel" name="phone" pattern="[0-9]{11}" id="username" placeholder="Phone" required="">
+                    <input type="password" id="password" placeholder="Password" id="password" required="" >
+                    <input type="password" id="passwordConf" placeholder="Confirm Password" id="password_conf" required="">
+					<div class="tp">
+                        <div id="register">Register NOW</div>
+                    </div>
+                </div>
+
+
+
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+                <script charset="utf-8">
+                $(document).ready(function(){
+
+                    function getQueryVariable(variable) {
+                        var query = window.location.search.substring(1);
+                        var vars = query.split("&");
+
+                        for (var i = 0; i < vars.length; i++) {
+                        var pair = vars[i].split("=");
+
+                        if (pair[0] == variable) {
+                            return pair[1];
+                        }
+                        }
+
+                        return false;
+                    }
+
+                    var imgName = getQueryVariable("imgName") ? getQueryVariable("imgName") : 'qqq1.png';
+                
+                                    
+
+
+
+                    $('#login').click(function(){
+          
+                
+                        $.ajax({
+                            type: "POST",
+                            url: "/login",
+                            data: JSON.stringify({
+                                logemail:$('#logemail').val(),
+                                logpassword:$('#logpassword').val()
+                
+                            }),
+                            contentType: "application/json; charset=utf-8",
+                            crossDomain: true,
+                            dataType: "json",
+                            success: function success(data, status, jqXHR) {
+                                if(data.userId){
+                                    // window.location.href='https://www.indo123.co/clip/Blur/index.html?imgName='+imgName
+                                    window.location.href='http://localhost/frontend/clip/index.html?imgName='+imgName
+
+                                }                                
+                            }
+                        });
+                    })
+                
+                
+                    $('#logout').click(function(){
+                
+                
+                        $.ajax({
+                            type: "POST",
+                            url: "/logout",
+                            data: JSON.stringify({
+                                
+                
+                            }),
+                            contentType: "application/json; charset=utf-8",
+                            crossDomain: true,
+                            dataType: "json",
+                            success: function success(data, status, jqXHR) {
+                                console.log(data)
+                            }
+                        });
+                    })                
+                
+                    
+                    $('#register').click(function(){
+                        var email=$('#email');
+                        var username=$('#username');
+                        var password=$('#password');
+                        var passwordConf=$('#passwordConf');
+
+                        if(password.val() != passwordConf.val()){ 
+                            alert("Passwords do not match. Please try again.");
+                        }                       
+                        $.ajax({
+                            type: "POST",
+                            url: "/register",
+                            data: JSON.stringify({
+                                email:email.val(),
+                                username:username.val(),
+                                password:password.val(),
+                                passwordConf:passwordConf.val()
+                            }),
+                            contentType: "application/json; charset=utf-8",
+                            crossDomain: true,
+                            dataType: "json",
+                            success: function success(data, status, jqXHR) {
+                                    // window.location.href='https://www.indo123.co/clip/Blur/index.html?imgName='+imgName
+                                    window.location.href='http://localhost/frontend/clip/index.html?imgName='+imgName
+
+                             }
+                        });
+                    })                
+                
+                })
+                
+                </script>        
+    </body>
+</html>

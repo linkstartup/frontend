@@ -1,0 +1,71 @@
+<html>
+    <header>
+        <style>
+            img{
+                width:100%;
+            }
+        </style>
+    </header>
+    <body>
+        <img id="photo" src="" alt="">
+        <div id="next">next</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split("=");
+
+      if (pair[0] == variable) {
+        return pair[1];
+      }
+    }
+
+    return false;
+  }
+
+  var imgName = getQueryVariable("imgName") ? getQueryVariable("imgName") : 'qqq1.png';
+  var photoId=0;
+  var allPhoto=[];
+  //   document.getElementById('photo').src="https://www.indo123.co/clip/Blur/"+imgName;
+  document.getElementById('photo').src="http://localhost/frontend/clip/second/"+imgName;
+  
+  $.ajax({
+      type: "POST",
+      url: "/findPhoto",
+      data: JSON.stringify({
+          
+      }),
+      contentType: "application/json; charset=utf-8",
+      crossDomain: true,
+      dataType: "json",
+      success:function success(data,status,jqXHR){
+          allPhoto=data.photo;  
+          for(let i=0;i<data.photo.length;i++){
+            if(imgName==data.photo[i].name){
+              photoId=i;
+            }
+          }
+          console.log(photoId)
+          if(photoId+1==allPhoto.length){
+            $('#next').click(function(){
+                window.location.href='http://localhost/frontend/clip/index.html?imgName='+allPhoto[0].name
+              })
+          }else{
+            $('#next').click(function(){
+                window.location.href='http://localhost/frontend/clip/index.html?imgName='+allPhoto[photoId+1].name
+              })
+          }
+
+          
+      }
+  })  
+})
+
+</script>    
+    </body>
+</html>
