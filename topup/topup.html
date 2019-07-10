@@ -1,0 +1,79 @@
+<html>
+    <header>
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <!-- <link href="register.css" rel="stylesheet" type="text/css" media="all" /> -->
+
+        </header>
+    <body>
+                
+
+                <div id='clipRegster'>
+                    <input type="text" id="key" placeholder="key" required="">
+                    <div class="tp">
+                        <div id="topup">top up</div>
+                    </div>
+                </div>
+
+
+
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+                <script charset="utf-8">
+                $(document).ready(function(){
+
+                    var userId='';
+                    var key=$('#key');
+
+                    $('#topup').click(function(){
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/successLog",
+                                    data: JSON.stringify({
+                                        
+                                    }),
+                                    contentType: "application/json; charset=utf-8",
+                                    crossDomain: true,
+                                    dataType: "json",
+                                    success: function success(data, status, jqXHR) {
+                                        console.log(data)
+                                        if(!data.status){
+                                            alert('please log in')
+                                        }else{
+                                            userId=data.user._id;
+
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "/topup",
+                                                data: JSON.stringify({
+                                                    key:key.val(),
+                                                    userId:userId
+                                                }),
+                                                contentType: "application/json; charset=utf-8",
+                                                crossDomain: true,
+                                                dataType: "json",
+                                                success: function success(data, status, jqXHR) {
+                                                        // window.location.href='https://www.indo123.co/clip/Blur/index.html?imgName='+imgName
+                                                        // window.location.href='http://localhost/frontend/clip/index.html?imgName='+imgName
+
+                                                }
+                                            });  
+                                        }
+                                                                      
+            
+                                    }
+                                })                             
+
+                            })
+
+                                   
+                                
+                                    
+             
+                
+               
+                
+                })
+                
+                </script>        
+    </body>
+</html>

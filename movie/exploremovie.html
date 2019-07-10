@@ -31,7 +31,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/findPhoto",
+            url: "/findMovie",
             data: JSON.stringify({
                 
             }),
@@ -39,11 +39,11 @@
             crossDomain: true,
             dataType: "json",
             success:function success(data,status,jqXHR){
-                console.log(data.photo)
-                for(let i=0;i<data.photo.length;i++){
-                    console.log(data.photo[i].name)
+                console.log(data.movie)
+                for(let i=0;i<data.movie.length;i++){
+                    console.log(data.movie[i].name)
                     // $("#submitFormBtn").append(`<img src="http://localhost/frontend/clip/second/${data.photo[i].name}">`)
-                    $("#submitFormBtn").append(`<div><a href="http://localhost/frontend/clip/index.html?imgName=${data.photo[i].name}">${i+1}</a></div>`)
+                    $("#submitFormBtn").append(`<div><a href="http://localhost/frontend/movie/movie.html?imgName=${data.movie[i].name}">${i+1}</a></div>`)
 
                 }
                 

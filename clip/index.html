@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0">
-	<title>橡皮擦效果</title>
+	<title></title>
 	<style type="text/css">
 		html,body{
 			width: 100%;
@@ -74,6 +74,7 @@ $(document).ready(function(){
 
 	var leftRatio;
     var a;
+	var userId='';
 
 	var canvas = document.getElementById("cas"), ctx = canvas.getContext("2d");
 	var x1, y1, timeout, totimes = 100, distance = 30;
@@ -98,34 +99,53 @@ $(document).ready(function(){
       success: function success(data, status, jqXHR) {
 		if(data.user){//已经登录
 			var user=data.user;
-			//查询用户特权
+			userId=user._id;
+			//查询账户余额
 			$.ajax({
 				type: "POST",
-				url: "/userEquity",
+				url: "/mycoin",
 				data: JSON.stringify({
-					user:user
+					userId:userId
 				}),
 				contentType: "application/json; charset=utf-8",
 				crossDomain: true,
 				dataType: "json",
 				success:function success(data,status,jqXHR){
-					console.log(data)
-					leftRatio=data.leftRatio?data.leftRatio:0.5;
-					a=data.a?data.a:50;
+					if(data.totalCoin<0){
+						alert('no coin')
+					}else{
+						//查询用户特权
+						$.ajax({
+							type: "POST",
+							url: "/userEquity",
+							data: JSON.stringify({
+								user:user
+							}),
+							contentType: "application/json; charset=utf-8",
+							crossDomain: true,
+							dataType: "json",
+							success:function success(data,status,jqXHR){
+								console.log(data)
+								leftRatio=data.leftRatio?data.leftRatio:0.1;
+								a=data.a?data.a:10;
 
-					var img = new Image();
-					img.src = "./first/"+imgName;
+								var img = new Image();
+								img.src = "./first/"+imgName;
 
 
-					img.onload = function () {
-						var w = canvas.height*img.width/img.height;
-						ctx.drawImage(img, (canvas.width-w)/2, 0, w, canvas.height);
-						tapClip()
-						// canvasBox.style.backgroundImage = "url("+imgName+")"
-						canvasBox.style.backgroundImage = "url(\'http://localhost/frontend/clip/second/"+imgName+"\')"
-					};
+								img.onload = function () {
+									var w = canvas.height*img.width/img.height;
+									ctx.drawImage(img, (canvas.width-w)/2, 0, w, canvas.height);
+									tapClip()
+									// canvasBox.style.backgroundImage = "url("+imgName+")"
+									canvasBox.style.backgroundImage = "url(\'http://localhost/frontend/clip/second/"+imgName+"\')"
+								};
+							}
+						})						
+					}
 				}
-			})
+			})			
+
 
 		}else{//未登录
 			// window.location.href='https://www.indo123.co/clip/Blur/login.html?imgName='+imgName
@@ -205,10 +225,28 @@ $(document).ready(function(){
 					}
 					if (dd / (imgData.width * imgData.height / (distance * distance)) < leftRatio) {
 						// canvas.className = "noOp";
-			            jumptozoom();
+						consume(userId)
+						jumptozoom();
 					}
 				}, totimes)
 			});
+
+			function consume(userId){
+				console.log(userId)
+				$.ajax({
+                            type: "POST",
+                            url: "/consume",
+                            data: JSON.stringify({
+								userId:userId
+                            }),
+                            contentType: "application/json; charset=utf-8",
+                            crossDomain: true,
+                            dataType: "json",
+                            success: function success(data, status, jqXHR) {
+                              
+                            }
+                        });				
+			}
 
 			function jumptozoom(){
 				// window.location.href='https://www.indo123.co/clip/Blur/sex.html?imgName='+imgName;

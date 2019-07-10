@@ -42,52 +42,7 @@
                     var imgName = getQueryVariable("imgName") ? getQueryVariable("imgName") : 'qqq1.png';
                 
                                     
-
-
-
-                    $('#login').click(function(){
-          
-                
-                        $.ajax({
-                            type: "POST",
-                            url: "/login",
-                            data: JSON.stringify({
-                                logemail:$('#logemail').val(),
-                                logpassword:$('#logpassword').val()
-                
-                            }),
-                            contentType: "application/json; charset=utf-8",
-                            crossDomain: true,
-                            dataType: "json",
-                            success: function success(data, status, jqXHR) {
-                                if(data.userId){
-                                    // window.location.href='https://www.indo123.co/clip/Blur/index.html?imgName='+imgName
-                                    window.location.href='http://localhost/frontend/clip/index.html?imgName='+imgName
-
-                                }                                
-                            }
-                        });
-                    })
-                
-                
-                    $('#logout').click(function(){
-                
-                
-                        $.ajax({
-                            type: "POST",
-                            url: "/logout",
-                            data: JSON.stringify({
-                                
-                
-                            }),
-                            contentType: "application/json; charset=utf-8",
-                            crossDomain: true,
-                            dataType: "json",
-                            success: function success(data, status, jqXHR) {
-                                console.log(data)
-                            }
-                        });
-                    })                
+             
                 
                     
                     $('#register').click(function(){
@@ -113,7 +68,8 @@
                             dataType: "json",
                             success: function success(data, status, jqXHR) {
                                     // window.location.href='https://www.indo123.co/clip/Blur/index.html?imgName='+imgName
-                                    window.location.href='http://localhost/frontend/clip/index.html?imgName='+imgName
+                                    // window.location.href='http://localhost/frontend/clip/index.html?imgName='+imgName
+                                    window.location.href='http://localhost/frontend/explore/explore.html';
 
                              }
                         });
